@@ -66,7 +66,7 @@ void insertionSort()
 
 void selectionSort()
 {
-    for (int i = 0; i < num - 1; i++)
+    for (int i = 0; i < num; i++)
     {
         int minI = i;
         for (int j = i + 1; j < num; j++)
