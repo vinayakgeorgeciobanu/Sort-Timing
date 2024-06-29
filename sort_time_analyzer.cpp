@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include <cstring>
+#include <string>
+#include <unordered_map>
 #include <chrono>
 
 using namespace std;
@@ -10,6 +11,33 @@ ifstream fin("input.txt");
 ofstream fout("output.txt");
 
 int a[100000], num;
+
+enum sortTypes
+{
+    BUBBLE,
+    INSERTION,
+    SELECTION,
+    UNKNOWN
+};
+
+sortTypes stringToType(const string &sortStr)
+{
+    static const unordered_map<string, sortTypes> sortMap = {
+        {"bubble", BUBBLE},
+        {"insertion", INSERTION},
+        {"selection", SELECTION},
+    };
+
+    auto it = sortMap.find(sortStr);
+    if (it != sortMap.end())
+    {
+        return it->second;
+    }
+    else
+    {
+        return UNKNOWN;
+    }
+}
 
 void fileRead()
 {
@@ -85,45 +113,44 @@ void selectionSort()
     }
 }
 
+void mergeSort()
+{
+}
+
 int main()
 {
     cout << "What type of soting method do you want to use? " << '\n';
     cout << "Choose from these : " << '\n';
     cout << "bubble, insertion, selection, ... " << '\n';
 
-    char sortType[20];
-    cin >> sortType;
-    for (int i = 0; i < strlen(sortType); i++)
-    {
-        sortType[i] = tolower(sortType[i]);
-    }
+    string input;
+    cin >> input;
+
+    sortTypes Sort = stringToType(input);
 
     fileRead();
 
     auto start = high_resolution_clock::now();
-    if (strcmp(sortType, "bubble") == 0)
+    switch (Sort)
     {
-
+    case BUBBLE:
         bubbleSort();
-    }
-    else if (strcmp(sortType, "insertion") == 0)
-    {
+        break;
+    case INSERTION:
         insertionSort();
-    }
-    else if (strcmp(sortType, "selection") == 0)
-    {
+        break;
+    case SELECTION:
         selectionSort();
-    }
-    else
-    {
-        cout << "You didn't select a sorting method mentioned or spelled it wrong, retry" << '\n';
+        break;
+    default:
+        cout << "You didn't select a sorting method mentioned or spelled it wrong, tyr again" << '\n';
+        return 0;
     }
     auto stop = high_resolution_clock::now();
 
     printResult();
 
     auto duration = duration_cast<microseconds>(stop - start);
-
     cout << "Time taken by this sorting method is : ";
     cout << duration.count() << " microseconds" << '\n';
 
