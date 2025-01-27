@@ -1,8 +1,6 @@
 #include <iostream>
-#include <vector>
 #include <fstream>
 #include <string>
-#include <unordered_map>
 #include <chrono>
 
 using namespace std;
@@ -11,232 +9,138 @@ using namespace std::chrono;
 ifstream fin("input.txt");
 ofstream fout("output.txt");
 
-int a[1000000], aSize;
-
-enum sortTypes
+class Numbers
 {
-    BUBBLE,
-    INSERTION,
-    SELECTION,
-    MERGE,
-    UNKNOWN
-};
-
-sortTypes stringToType(const string &sortStr)
-{
-    static const unordered_map<string, sortTypes> sortMap = {
-        {"bubble", BUBBLE},
-        {"insertion", INSERTION},
-        {"selection", SELECTION},
-        {"merge", MERGE},
-    };
-
-    auto it = sortMap.find(sortStr);
-    if (it != sortMap.end())
+private:
+    int arr[1000000]; // array to store numbers
+    int arr_size;     // number of elements in array
+    // bubble sort implementation
+    void bubbleSort()
     {
-        return it->second;
-    }
-    else
-    {
-        return UNKNOWN;
-    }
-}
-
-void fileRead()
-{
-    aSize = 0;
-    while (fin >> a[aSize])
-    {
-        aSize++;
-    }
-}
-
-void printResult()
-{
-    for (int i = 0; i < aSize; i++)
-    {
-        fout << a[i] << ' ';
-    }
-}
-
-void bubbleSort()
-{
-    auto start = high_resolution_clock::now();
-
-    bool sorted;
-    do
-    {
-        sorted = true;
-        for (int i = 0; i < aSize - 1; i++)
+        auto start = high_resolution_clock::now();
+        for (int i = 0; i < arr_size - 1; i++)
         {
-            if (a[i] > a[i + 1])
+            for (int j = 0; j < arr_size - i - 1; j++)
             {
-                int aux = a[i];
-                a[i] = a[i + 1];
-                a[i + 1] = aux;
-                sorted = false;
+                if (arr[j] > arr[j + 1])
+                {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
             }
         }
-    } while (!sorted);
-
-    auto stop = high_resolution_clock::now();
-
-    auto duration = duration_cast<microseconds>(stop - start);
-    cout << "Time: " << duration.count() << " microseconds" << '\n';
-}
-
-void insertionSort()
-{
-    auto start = high_resolution_clock::now();
-
-    int current, j;
-    for (int i = 1; i < aSize; i++)
-    {
-        current = a[i];
-        j = i - 1;
-
-        while (j >= 0 && a[j] > current)
-        {
-            a[j + 1] = a[j];
-            j--;
-        }
-        a[j + 1] = current;
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start);
+        fout << "Time: " << duration.count() << " microseconds" << '\n';
     }
-
-    auto stop = high_resolution_clock::now();
-
-    auto duration = duration_cast<microseconds>(stop - start);
-    cout << "Time: " << duration.count() << " microseconds" << '\n';
-}
-
-void selectionSort()
-{
-    auto start = high_resolution_clock::now();
-
-    for (int i = 0; i < aSize; i++)
+    // selection sort implementation
+    void selectionSort()
     {
-        int minI = i;
-        for (int j = i + 1; j < aSize; j++)
+        auto start = high_resolution_clock::now();
+        for (int i = 0; i < arr_size - 1; i++)
         {
-            if (a[i] < a[minI])
+            for (int j = i + 1; j < arr_size; j++)
             {
-                minI = i;
+                if (arr[j] < arr[i])
+                {
+                    int temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
             }
         }
-        if (minI != i)
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start);
+        fout << "Time: " << duration.count() << " microseconds" << '\n';
+    }
+    // insertion sort implementation
+    void insertionSort()
+    {
+        auto start = high_resolution_clock::now();
+        for (int i = 1; i < arr_size; i++)
         {
-            int aux = a[i];
-            a[i] = a[minI];
-            a[minI] = aux;
+            int key = arr[i];
+            int j = i - 1;
+            while (j >= 0 && arr[j] > key)
+            {
+                arr[j + 1] = arr[j];
+                j--;
+            }
+            arr[j + 1] = key;
         }
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start);
+        fout << "Time: " << duration.count() << " microseconds" << '\n';
     }
 
-    auto stop = high_resolution_clock::now();
-
-    auto duration = duration_cast<microseconds>(stop - start);
-    cout << "Time: " << duration.count() << " microseconds" << '\n';
-}
-
-void merge(int left, int mid, int right)
-{
-    const int n1 = mid - left + 1;
-    const int n2 = right - mid;
-
-    vector<int> L(n1), R(n2);
-
-    for (int i = 0; i < n1; i++)
+public:
+    // initializes the array and the size 
+    Numbers() : arr_size(0), arr{0} {}
+    // read numbers from input array
+    void read()
     {
-        L[i] = a[left + i];
-    }
-    for (int j = 0; j < n2; j++)
-    {
-        R[j] = a[mid + 1 + j];
-    }
-
-    int i = 0, j = 0;
-    int k = mid;
-
-    while (i < n1 && j < n2)
-    {
-        if (L[i] <= R[j])
+        int i = 0;
+        while (fin >> arr[i])
         {
-            a[k] = L[i];
             i++;
+        }
+        arr_size = i;
+    }
+    // print the sorted array to the output file
+    void print()
+    {
+        for (int i = 0; i < arr_size; i++)
+        {
+            fout << arr[i] << ' ';
+        }
+    }
+    // select sorting method based on input
+    void selectSort(string input)
+    {
+        if (input == "bubble")
+        {
+            bubbleSort();
+        }
+        else if (input == "selection")
+        {
+            selectionSort();
+        }
+        else if (input == "insertion")
+        {
+            insertionSort();
         }
         else
         {
-            a[k] = R[j];
-            j++;
+            fout << "You didn't select a sorting method mentioned or spelled it wrong, tyr again" << '\n';
+            return; // exit function if the input is invalid
         }
     }
-    while (i < n1)
-    {
-        a[k] = L[i];
-        i++;
-        k++;
-    }
-    while (i < n2)
-    {
-        a[k] = R[j];
-        j++;
-        k++;
-    }
-}
-void mergeSorting(int left, int right)
-{
-    if (left < right)
-    {
-        int mid = left + (right - left) / 2;
-        mergeSorting(left, mid);
-        mergeSorting(mid + 1, right);
-        merge(left, mid, right);
-    }
-}
-void mergeSort()
-{
-    auto start = high_resolution_clock::now();
-
-    mergeSorting(0, aSize - 1);
-
-    auto stop = high_resolution_clock::now();
-
-    auto duration = duration_cast<microseconds>(stop - start);
-    cout << "Time: " << duration.count() << " microseconds" << '\n';
-}
+};
 
 int main()
 {
-    cout << "What type of soting method do you want to use? " << '\n';
-    cout << "Choose from these : " << '\n';
-    cout << "bubble, insertion, selection, merge" << '\n';
-
-    string input;
-    cin >> input;
-
-    sortTypes Sort = stringToType(input);
-
-    fileRead();
-
-    switch (Sort)
+    // check if files are opened successfully
+    if (!fin.is_open())
     {
-    case BUBBLE:
-        bubbleSort();
-        break;
-    case INSERTION:
-        insertionSort();
-        break;
-    case SELECTION:
-        selectionSort();
-        break;
-    case MERGE:
-        mergeSort();
-        break;
-    default:
-        cout << "You didn't select a sorting method mentioned or spelled it wrong, tyr again" << '\n';
-        return 0;
+        cerr << "Error: Could not open input.txt for reading." << '\n';
+        return 1;
     }
-
-    printResult();
-
+    if (!fout.is_open())
+    {
+        cerr << "Error: Could not open output.txt for writing." << '\n';
+        return 1;
+    }
+    // read the sorting method from the file
+    string input;
+    fin >> input;
+    // creat a Number object, read data, sort, and print the result
+    Numbers nums;
+    nums.read();
+    nums.selectSort(input);
+    nums.print();
+    // close files
+    fin.close();
+    fout.close();
     return 0;
 }
