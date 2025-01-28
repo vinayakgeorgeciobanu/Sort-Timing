@@ -4,6 +4,7 @@ You can choose from:
 - Bubble sort
 - Selection sort
 - Insertion sort
+
 How to setup:
 1. open the input.txt file
 2. on the first line write the type of sort you want to use (make sure to spell it properly)
