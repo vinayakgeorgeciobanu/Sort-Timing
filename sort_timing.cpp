@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 #include <chrono>
 
 using namespace std;
@@ -29,8 +30,9 @@ public:
 class Numbers
 {
 private:
-    int arr[100000]; // array to store numbers
-    int arr_size;    // number of elements in array
+    vector<long long> arr; // array to store numbers
+    int arr_size;          // number of elements in array
+
     // bubble sort implementation
     void bubbleSort()
     {
@@ -83,28 +85,27 @@ private:
     }
 
 public:
-    // initializes the array and the size
-    Numbers() : arr_size(0), arr{0} {}
+    Numbers() : arr_size(0) {}
     // read numbers from input array
     void read()
     {
-        int i = 0;
-        while (fin >> arr[i])
+        int num;
+        while (fin >> num)
         {
-            i++;
+            arr.push_back(num);
         }
-        arr_size = i;
+        arr_size = arr.size();
     }
     // print the sorted array to the output file
     void print()
     {
-        for (int i = 0; i < arr_size; i++)
+        for (int num : arr)
         {
-            fout << arr[i] << ' ';
+            fout << num << ' ';
         }
     }
     // select sorting method based on input
-    void selectSort(string input)
+    void selectSort(const string &input)
     {
         if (input == "bubble")
         {
@@ -120,7 +121,7 @@ public:
         }
         else
         {
-            fout << "You didn't select a sorting method mentioned or spelled it wrong, tyr again" << '\n';
+            fout << "Invalid sorting method: " << input << ". Please use 'bubble', 'selection', or 'insertion'.\n";
             return; // exit function if the input is invalid
         }
     }
@@ -139,9 +140,11 @@ int main()
         cerr << "Error: Could not open output.txt for writing." << '\n';
         return 1;
     }
+
     // read the sorting method from the file
     string input;
     getline(fin, input);
+
     // creat a Number object, read data, sort, and print the result
     Numbers nums;
     nums.read();
