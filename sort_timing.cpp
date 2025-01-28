@@ -9,6 +9,23 @@ using namespace std::chrono;
 ifstream fin("input.txt");
 ofstream fout("output.txt");
 
+class Timer
+{
+private:
+    string name;
+    time_point<high_resolution_clock> start;
+
+public:
+    Timer(const string &name) : name(name), start(high_resolution_clock::now()) {}
+
+    ~Timer()
+    {
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start);
+        fout << name << " Time: " << duration.count() << " microseconds" << '\n';
+    }
+};
+
 class Numbers
 {
 private:
@@ -17,7 +34,7 @@ private:
     // bubble sort implementation
     void bubbleSort()
     {
-        auto start = high_resolution_clock::now();
+        Timer timer("Bubble Sort");
         for (int i = 0; i < arr_size - 1; i++)
         {
             for (int j = 0; j < arr_size - i - 1; j++)
@@ -30,14 +47,11 @@ private:
                 }
             }
         }
-        auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<microseconds>(stop - start);
-        fout << "Time: " << duration.count() << " microseconds" << '\n';
     }
     // selection sort implementation
     void selectionSort()
     {
-        auto start = high_resolution_clock::now();
+        Timer timer("Selection Sort");
         for (int i = 0; i < arr_size - 1; i++)
         {
             for (int j = i + 1; j < arr_size; j++)
@@ -50,14 +64,11 @@ private:
                 }
             }
         }
-        auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<microseconds>(stop - start);
-        fout << "Time: " << duration.count() << " microseconds" << '\n';
     }
     // insertion sort implementation
     void insertionSort()
     {
-        auto start = high_resolution_clock::now();
+        Timer timer("Insertion Sort");
         for (int i = 1; i < arr_size; i++)
         {
             int key = arr[i];
@@ -69,9 +80,6 @@ private:
             }
             arr[j + 1] = key;
         }
-        auto stop = high_resolution_clock::now();
-        auto duration = duration_cast<microseconds>(stop - start);
-        fout << "Time: " << duration.count() << " microseconds" << '\n';
     }
 
 public:
@@ -88,9 +96,8 @@ public:
         arr_size = i;
     }
     // print the sorted array to the output file
-    void print(string input)
+    void print()
     {
-        fout << "Sorting method: " << input << '\n';
         for (int i = 0; i < arr_size; i++)
         {
             fout << arr[i] << ' ';
@@ -139,7 +146,7 @@ int main()
     Numbers nums;
     nums.read();
     nums.selectSort(input);
-    nums.print(input);
+    nums.print();
 
     return 0;
 }

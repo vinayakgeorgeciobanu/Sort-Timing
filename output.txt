@@ -1,3 +1,2 @@
-Time: 0 microseconds
-Sorting method: bubble
+Bubble Sort Time: 2 microseconds
 2 3 3 4 6 6 9 
