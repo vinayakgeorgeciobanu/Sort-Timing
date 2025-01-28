@@ -1,10 +1,10 @@
 # Sort-Timing
 This code helps you find out how much time it take for different sortimg methods take.
 
-You can choose from:
-- Bubble sort
-- Selection sort
-- Insertion sort
+You can choose from (by writing):
+- Bubble sort (bubble)
+- Selection sort (selection)
+- Insertion sort (insertion)
 
 How to setup:
 1. open the input.txt file
