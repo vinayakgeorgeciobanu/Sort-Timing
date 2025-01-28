@@ -1,5 +1,6 @@
 # sort-timing
 This code helps you find out how much time it take for different sortimg methods take.
+
 You can choose from:
 - Bubble sort
 - Selection sort
