@@ -1,6 +1,12 @@
 # sort-timing
-1. put a sequence of numbers in the input file (optional, there is already a sequence there put as an example)
-2. run the c++ program
-3. chose a sorting method (make sure to spell corectly)
-4. on the screen will be displayed the execution time of the chosen function
-5. the output file will contain the sequence of numbers in an ascending order
+This code helps you find out how much time it take for different sortimg methods take.
+You can choose from:
+- Bubble sort
+- Selection sort
+- Insertion sort
+How to setup:
+1. open the input.txt file
+2. on the first line write the type of sort you want to use (make sure to spell it properly)
+3. on the second line write a sequnce of numbers, preferably a long one to see the diffrence in time
+4. run .exe file
+6. open the output.txt file and check how long it took
