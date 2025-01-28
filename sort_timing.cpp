@@ -12,8 +12,8 @@ ofstream fout("output.txt");
 class Numbers
 {
 private:
-    int arr[1000000]; // array to store numbers
-    int arr_size;     // number of elements in array
+    int arr[100000]; // array to store numbers
+    int arr_size;    // number of elements in array
     // bubble sort implementation
     void bubbleSort()
     {
@@ -75,7 +75,7 @@ private:
     }
 
 public:
-    // initializes the array and the size 
+    // initializes the array and the size
     Numbers() : arr_size(0), arr{0} {}
     // read numbers from input array
     void read()
@@ -88,8 +88,9 @@ public:
         arr_size = i;
     }
     // print the sorted array to the output file
-    void print()
+    void print(string input)
     {
+        fout << "Sorting method: " << input << '\n';
         for (int i = 0; i < arr_size; i++)
         {
             fout << arr[i] << ' ';
@@ -133,14 +134,12 @@ int main()
     }
     // read the sorting method from the file
     string input;
-    fin >> input;
+    getline(fin, input);
     // creat a Number object, read data, sort, and print the result
     Numbers nums;
     nums.read();
     nums.selectSort(input);
-    nums.print();
-    // close files
-    fin.close();
-    fout.close();
+    nums.print(input);
+
     return 0;
 }
